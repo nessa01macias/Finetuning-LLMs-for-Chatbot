@@ -15,7 +15,7 @@ def extract_text_from_pdf(file_path):
     try:
         reader = PdfReader(file_path)
         text = []
-        keywords = ["acknowledgments", "references", "citations", "publication details", "appendices", "bibliography", "annexes", "end notes"]
+        keywords = ["acknowledgments", "references", "citations", "bibliography", "annexes", "end notes"]
         intro_sections = ["contents", "table of contents"]  # Sections that should not trigger text cut-off
         capture_text = True  # This flag determines whether to continue capturing text
 
@@ -170,7 +170,7 @@ def initialize_pipeline(model, tokenizer):
             model=model,
             tokenizer=tokenizer,
             torch_dtype=torch.bfloat16,
-            batch_size=24,
+            batch_size=6,
             device_map="auto",
             truncation=True,
             repetition_penalty=1.1 
@@ -180,18 +180,24 @@ def initialize_pipeline(model, tokenizer):
 
 
 def generate_qa_pairs(text, generator):
-    prompt = f"[INST] Please read the following context and generate a question and answer pair that captures the most important information. Provide the question first, followed by the answer, and ensure the format is clean with no additional text or symbols. Context: {text} [/INST]"
-    sequences = generator(
-        prompt,
-        do_sample=True,
-        max_new_tokens=500, 
-        min_new_tokens= 150,
-        temperature=0.4, 
-        top_k=50, 
-        top_p=0.95,
-        pad_token_id=generator.tokenizer.eos_token_id,
-        num_return_sequences=1
-    )
+    prompt = f"[INST] Please read the following context and generate a question and answer pair that captures the most important information. Make the question and answer detailed and with context. Provide the question first, followed by the answer, and ensure the format is clean with no additional text or symbols. Context: {text} [/INST]"
+    try:
+        sequences = generator(
+            prompt,
+            do_sample=True,
+            max_new_tokens=1000, 
+            min_new_tokens= 200,
+            temperature=0.2, 
+            top_k=50, 
+            top_p=0.95,
+            pad_token_id=generator.tokenizer.eos_token_id,
+            num_return_sequences=1
+        )
+    finally:
+    # Clear GPU memory cache to prevent fragmentation and OOM errors
+        torch.cuda.empty_cache()
+        torch.cuda.memory_summary(device=None, abbreviated=False)
+
     return sequences[0]['generated_text']
 
 def parse_qa_from_text(text):
