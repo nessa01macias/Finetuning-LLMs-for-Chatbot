@@ -1,0 +1,124 @@
+{
+    "9781000886078_removed (3).pdf": [
+        {
+            "question": "What is the environmental impact of artificial intelligence according to the author?",
+            "answer": "The author explains the environmental"
+        },
+        {
+            "question": "What steps has Europe taken towards a Green Recovery from the pandemic?",
+            "answer": "Europe has developed strategies for a Green Recovery, with a major recovery plan proposed on May 26, 2020, and approved on July 21, 2020. Technological innovations and digital services are at the core of this recovery, creating millions of jobs and boosting economies. Additionally, a long-term budget of 1,074.3 billion euros for 2021-2027 was agreed upon."
+        },
+        {
+            "question": "How does the European Commission's Strategic Foresight Report 2022 emphasize the importance of the green and digital transitions?",
+            "answer": "The European Commission's Strategic Foresight Report 2022 highlights the crucial role of the green and digital transitions, both being prioritized on the political agenda. For the first time, the report acknowledges that digital technologies will bring additional environmental burdens unless they become more energy-efficient."
+        },
+        {
+            "question": "What are the environmental costs of information and communications technology (ICT), and why is AI often seen as a solution despite these costs?",
+            "answer": "ICT is responsible for 5-9% of global electricity use and around 3% of gas emissions. Studies show that ICT power consumption will continue to grow due to increasing use and production of consumer devices, network demand, data centers, and crypto assets. However, ICT systems are often seen as the key technology to solve contemporary challenges, including the environmental crisis, despite these environmental costs. Further tensions will emerge in relation to electronic waste and the environmental footprints of digital technologies. (Source: p. 2-3, 2022)"
+        },
+        {
+            "question": "How does the implementation of a specific recovery plan impact the achievement of SDGs related to sustainable environmental development?",
+            "answer": "The text raises the question of whether a specific recovery plan is enabling or hindering the achievement of SDGs related to sustainable environmental development. The chapter further explores this question by analyzing communication systems as assemblages of material devices and infrastructures and their impact on scarce resources."
+        },
+        {
+            "question": "How is the pandemic affecting greenhouse gas emissions despite the decline in transportation and industrial activity?",
+            "answer": "Despite the decline in transportation and industrial activity during the pandemic, greenhouse gas emissions have remained high due to constant electricity consumption, which is largely derived from fossil fuels. Global electricity energy mix comprises 64% fossil fuels, making it the largest source of greenhouse gas emissions. Without fundamental shifts to renewable resources in the global energy production, it will be challenging to prevent incalculable loss of life. Additionally, the tech industry's carbon footprint is projected to increase to 14% by 2040, with data centers contributing 45% and network infrastructure 24%. More research is needed to understand the environmental toll of AI, a communication technology deeply reliant on data and energy."
+        },
+        {
+            "question": "How can intelligent technologies contribute to solving environmental challenges such as climate change, biodiversity, ocean health, water management, air pollution, and resilience?",
+            "answer": "Intelligent technologies can unlock solutions to society's most pressing environmental challenges by delivering intelligence and productivity gains, and scientists are increasingly using these tools to forecast adverse effects of future climate change."
+        },
+        {
+            "question": "What does Treeswift offer in terms of forest monitoring and alignment with SDGs?",
+            "answer": "Treeswift provides an AI-powered forest-monitoring system using autonomous drones and machine learning to capture data, images, and inventory for mapping forest biomass. It offers carbon capture data, deforestation monitoring, growth forecasting, and support for forest management in preservation, the timber industry, and wildfire control aligned with SDGs 13 and 15. Additionally, it is predicted to assist in the integration and spread of renewable energy through flexible price mechanisms and efficient energy storage and load operation (SDG 13)."
+        },
+        {
+            "question": "How does precision agriculture contribute to resource management, minimizing environmental impact, and increasing global resilience?",
+            "answer": "Precision agriculture enhances productivity, aids in resource management, minimizes environmental impact, and increases global resilience through applications focused on data, informed decision-making, and augmented responses to changes in supply and demand. It is supported by the emerging field of climate informatics, which utilizes machine learning and deep learning networks to revolutionize weather and climate change understanding."
+        },
+        {
+            "question": "How has SDG 15 been applied in water management, providing examples with reference to a study in Northern China?",
+            "answer": "SDG 15 has been applied in water management through methods that identify climatological-hydrological relationships and project future temperature, precipitation, and streamflow in a mountainous watershed in Northern China. This information helps determine annual hydrological responses to these variables. (Referenced from: [2019]). Other relevant applications are explored further in Chapter 4 of the book by [and] [authors' names]."
+        },
+        {
+            "question": "What role has TECH OPTIMISM and SDG 15 played in addressing the inequalities of capitalism?",
+            "answer": "TECH OPTIMISM and SDG 15 have long been considered potential solutions to the inequalities of capitalism. However, specific details about how they address these inequalities were not provided in the context"
+        },
+        {
+            "question": "How does the credo of Techno-solutionism approach environmental problems?",
+            "answer": "The credo of Techno-solutionism believes that digital technology can disrupt environmental problems without the need to challenge the status quo."
+        },
+        {
+            "question": "What is the Ecomodernist perspective on climate mitigation and how does it differ from other views?",
+            "answer": "The Ecomodernist perspective argues that climate mitigation is a technological challenge and encourages limitless economic growth. They believe that advancements in renewable energy will lead to abundant distributed energy, rather than a need to consume less. This differs from other perspectives that place the unequal capitalist power relations at the center of the climate emergency and advocate for reducing energy consumption or downsizing life. Despite its focus on limiting greenhouse gas emissions, the International Monetary Fund has encouraged technological improvement in energy efficiency as a way of averting environmental disaster, which some argue is an apology for the status quo embraced by corporate giants."
+        },
+        {
+            "question": "How does the production of AI technology contribute to environmental costs and overlooked sustainability goals, according to the text?",
+            "answer": "The text discusses how the production of AI technology requires the extraction of rare metals and mineral sources, following logics of colonialism, and overlooks social and environmental justice. This goes against sustainability goals such as SDG 12 (responsible consumption), SDG 13 (climate action), SDG 15 (life on land), and SDG 7 (clean energy), as well as more generic sustainability goals. The concept of \"technocolonialism\" is introduced to analyze how digital developments converge with humanitarian structures and market forces, reinvigorating and reworking colonial legacies."
+        },
+        {
+            "question": "How does the extraction of minerals for AI hardware impact global supply chains and which SDGs are affected?",
+            "answer": "The global supply chains of AI technology are characterized by the tenacity of colonial genealogies and inequalities due to the extractive nature of technocolonialism. The demand for mineral resources, such as lithium, is growing exponentially for AI applications, compromising several SDGs including 13, 15, and 12. For instance, the extraction of lithium in the Andes is projected to increase by 3500% by 2050."
+        },
+        {
+            "question": "How much carbon dioxide equivalent can a common language model in Linguistics emit during training, according to a 2019 study?",
+            "answer": "More than 284 tons."
+        },
+        {
+            "question": "Which authors have highlighted contradictions between the drive for growth and preservation of land, specifically in relation to SDGs 14-15?",
+            "answer": "Authors such as [29] and []."
+        },
+        {
+            "question": "What environmental costs are associated with the production phase of the global supply chain, specifically in relation to model production?",
+            "answer": "High environmental costs are associated with the production phase of the global supply chain, specifically in relation to model production."
+        },
+        {
+            "question": "What was the finding of the 2019 study regarding the energy consumption of running artificial intelligence programs?",
+            "answer": "The study found that a common language model in Linguistics can emit more than 284 tons of carbon diox"
+        },
+        {
+            "question": "What is the environmental impact of relying on converged communication systems compared to the average American car or a return flight from London to NYC?",
+            "answer": "The environmental impact of relying on converged communication systems is comparable to five times the lifetime emissions of an average American car or roughly 100 return flights from London to NYC. However, these systems also generate environmental problems of their own, including energy consumption and emissions, material toxicity, and electronic waste. Additionally, if the energy demand continues to accelerate, the residential electricity needed to power electronics will account for 30% of global consumption by 2022 and 45% by 2030."
+        },
+        {
+            "question": "How much energy does cloud computing consume each year and how does it compare to the national energy consumption of certain countries?",
+            "answer": "Cloud computing consumes approximately 200 TWh of energy each year, which is more than the national energy consumption of countries like Iran. The ICT sector, which includes cloud computing, accounts for 2% of global emissions."
+        },
+        {
+            "question": "Which sector could see significant growth in greenhouse gas emissions, potentially exceeding 14% worldwide by 2040, and how does this impact SDG 7 and SDG 13?",
+            "answer": "Greenhouse gas emissions from the transportation sector could grow from roughly 1-1.6% in 2007 to exceed 14% worldwide by 2040, posing challenges to SDG 7 (Affordable and Clean Energy) and SDG 13 (Climate Action)."
+        },
+        {
+            "question": "How do data centers' water requirements raise policy issues, specifically in areas affected by drought?",
+            "answer": "Data centers require large, continuous supplies of water for their cooling systems, compromising SDG 15 (Life on Land) in places like the United States and Australia where years of drought have ravaged communities."
+        },
+        {
+            "question": "What are some sources of energy use in data centers and how is cooling typically accomplished?",
+            "answer": "One of the primary sources of energy use in data centers is cooling. Cooling is typically accomplished via large industrial equipment such as pumps, chillers, and cooling towers."
+        },
+        {
+            "question": "What is the issue with disposal of devices employed in AI?",
+            "answer": "When communication machines are discarded, they become electronic waste or e-waste, saddling local municipalities with the challenge of safe disposal."
+        },
+        {
+            "question": "What is the expected global size of the market for hydrocarbons in the oil and gas industry by 2025?",
+            "answer": "The market for hydrocarbons in the oil and gas industry is expected to reach around USD 4.01 billion globally by 2025."
+        },
+        {
+            "question": "Which AI companies are expanding their services to the oil and gas industry for increased efficiency and productivity?",
+            "answer": "Companies such as IBM, Microsoft, and C3.AI are partnering with oil and gas companies to deploy AI programs and increase excavation and drilling efficiencies. For instance, IBM signed a partnership with Eni, Microsoft with Petrobras, and C3.AI with European oil major Total."
+        },
+        {
+            "question": "How should we approach the acceleration of algorithm-powered data communication in relation to sustainability and the climate emergency?",
+            "answer": "Instead of viewing new technologies as a utopian solution, we need to quantify and consider the environmental costs and damages. We should also ask who owns and controls the essential infrastructures that power data communication and prioritize the climate emergency in the debate on sustainable development. (Saetra, 2021;, 2022)"
+        },
+        {
+            "question": "How can the future of artificial intelligence (AI) be shaped to prioritize collective well-being and minimize climate impact?",
+            "answer": "Global forums and national levels are making progress through international agreements, legislative frameworks, position papers, and guidelines. However, there is a need to connect environmental and AI policy discussions, and more research is required to understand the environmental damage caused by AI. When considering the future of AI, it's essential to address its technocolonialist character and consider all its environmental costs."
+        },
+        {
+            "question": "What are some resources required for hardware and machine production that pose challenges to SDGs 6, 7, 13, 14, and 15?",
+            "answer": "Mineral extractions, water, energy, and natural resources are necessary for hardware and machine production, but their acquisition poses significant challenges to SDGs 6 (clean water and sanitation), 7 (affordable and clean energy), 13 (climate action), 14 (life below water), and 15 (life on land)."
+        }
+    ]
+}
