@@ -20,15 +20,15 @@ import json
 
 # Path setup for the JSON file containing the data
 pdf_dir = os.getcwd()  # Adjust this if necessary to point to the correct directory
-sustainability_pdf = os.path.join(pdf_dir, 'sustainability_pdfs', 'results', 'final', 'final_results.json')
+combined_data = os.path.join(pdf_dir, 'data_generation', 'sustainability_pdfs', 'results', 'final', 'all_data_combined.json')
 
 # Load JSON data
-with open(sustainability_pdf, encoding="utf8") as file:
+with open(combined_data, encoding="utf8") as file:
     data = json.load(file)
 
 # Transform data into the desired format and create a DataFrame
-formatted_data = [f"[INST] {item['question']} [/INST] {item['answer']}" for item in data]
-df = pd.DataFrame(formatted_data, columns=['text'])
+df = pd.DataFrame(data)
 
 # Display the DataFrame to verify contents
 print(df.head())
+print(df.shape)
