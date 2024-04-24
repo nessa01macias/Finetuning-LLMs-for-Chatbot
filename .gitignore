@@ -3,4 +3,5 @@
 /.venv/*
 .ipynb_checkpoints
 ./.ipynb_checkpoints/*
-/data_generation/sustainability_pdfs/results/final/*
+data_generation/sustainability_pdfs/results/final/all_data_combined.json
+data_generation/sustainability_pdfs/results/final/train_data.json
