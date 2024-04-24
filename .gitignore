@@ -2,3 +2,5 @@
 /.venv/
 /.venv/*
 .ipynb_checkpoints
+./.ipynb_checkpoints/*
+/data_generation/sustainability_pdfs/results/final/*
