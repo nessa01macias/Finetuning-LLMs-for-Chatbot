@@ -8,7 +8,7 @@ def load_and_format_sustainability_data(file_path, min_length=50):
         with open(file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
             formatted_data = [
-                {'text': f"[INST] {qa['question'].strip()} [/INST] {qa['answer'].strip()}"}
+                {'text': f"Question: {qa['question'].strip()} \nAnswer: {qa['answer'].strip()}"}
                 for qa in data if len(qa['question'].strip()) >= min_length and len(qa['answer'].strip()) >= min_length
             ]
             return pd.DataFrame(formatted_data)
@@ -35,7 +35,7 @@ def get_formatted_data_hf(dataset_name, question_key, answer_key):
 
         # Format the data
         formatted_data = [
-            {'text': f"[INST] {item[question_key].strip()} [/INST] {item[answer_key].strip()}"}
+            {'text': f"Question: {item[question_key].strip()} \nAnswer: {item[answer_key].strip()}"}
             for item in dataset if question_key in item and answer_key in item
         ]
         print(f"Formatted data with {len(formatted_data)} entries.")
@@ -68,7 +68,7 @@ def get_formatted_slim_orca_data():
             # If both question and answer are found, format and add to list
             if question and answer:
                 formatted_data.append({
-                    'text': f"[INST] {question} [/INST] {answer}"
+                    'text': f"Question: {question} \nAnswer: {answer}"
                 })
 
         # Convert the list to a DataFrame
@@ -82,7 +82,7 @@ def get_formatted_xsum_data():
     try:
         dataset = load_dataset("EdinburghNLP/xsum", split="train", download_mode="force_redownload")
         formatted_data = [
-            {'text': f"[INST] You are an AI assistant. You need to make a concise summary from the following text: {item['document'].strip()} [/INST] {item['summary'].strip()}"}
+            {'text': f"Question: You are an AI assistant. You need to make a concise summary from the following text: {item['document'].strip()} \nAnswer: {item['summary'].strip()}"}
             for item in dataset
         ]
         return pd.DataFrame(formatted_data)
