@@ -72,7 +72,13 @@ def get_formatted_slim_orca_data():
                 })
 
         # Convert the list to a DataFrame
-        return pd.DataFrame(formatted_data)
+        df = pd.DataFrame(formatted_data)
+
+        # Sample one-third of the DataFrame randomly without replacement
+        sampled_df = df.sample(frac=1/6, random_state=42)  # random_state for reproducibility
+
+        return sampled_df
+    
     except Exception as e:
         print(f"Failed to load or format Open-Orca/SlimOrca: {e}")
         return pd.DataFrame()
@@ -85,7 +91,14 @@ def get_formatted_xsum_data():
             {'text': f"Question: You are an AI assistant. You need to make a concise summary from the following text: {item['document'].strip()} \nAnswer: {item['summary'].strip()}"}
             for item in dataset
         ]
-        return pd.DataFrame(formatted_data)
+        # Convert the list to a DataFrame
+        df = pd.DataFrame(formatted_data)
+
+        # Sample one-third of the DataFrame randomly without replacement
+        sampled_df = df.sample(frac=1/2, random_state=42)  # random_state for reproducibility
+
+        return sampled_df
+
     except Exception as e:
         print(f"Failed to load or format xsum dataset: {e}")
         return pd.DataFrame()
