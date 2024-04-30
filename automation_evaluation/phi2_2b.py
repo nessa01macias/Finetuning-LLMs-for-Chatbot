@@ -10,12 +10,13 @@ def load_test_data(filepath):
     references = [[item['text'].split("\nAnswer:")[1].strip()] for item in data]
     return questions, references
 
-def generate_predictions(model, tokenizer, questions, batch_size=16):
+def generate_predictions(model, tokenizer, questions, batch_size=8):  # Adjust batch size if necessary for memory management
     predictions = []
     for i in range(0, len(questions), batch_size):
         batch_questions = questions[i:i+batch_size]
-        inputs = tokenizer(batch_questions, return_tensors="pt", padding=True, truncation=True)
-        outputs = model.generate(**inputs, max_length=512)
+        inputs = tokenizer(batch_questions, return_tensors="pt", padding=True, truncation=True, max_length=2048)
+        # Adjust the max_new_tokens or max_length according to the model limits and desired output length
+        outputs = model.generate(**inputs, max_new_tokens=548)  # or use max_new_tokens=512 if you want to restrict the length of the generation based on the input length
         batch_predictions = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
         predictions.extend(batch_predictions)
     return predictions
@@ -38,15 +39,20 @@ def main():
     model = AutoModelForCausalLM.from_pretrained("nessa01macias/phi-2_sustainability-qa", trust_remote_code=False, torch_dtype=torch.float32)
     tokenizer = AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=False)
 
+    print("Model and tokenizer loaded")
+
     # Set padding token if not present
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+        tokenizer.padding_side = "right"
 
     # Load test data
     questions, references = load_test_data(test_data_path)
 
+    print("Data loaded")
+
     # Generate predictions
-    predictions = generate_predictions(model, tokenizer, questions, batch_size=16)
+    predictions = generate_predictions(model, tokenizer, questions, batch_size=8)
 
     # Calculate BLEU score
     bleu_score = calculate_bleu(predictions, references)
