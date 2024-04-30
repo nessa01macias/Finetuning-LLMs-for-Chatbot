@@ -88,7 +88,7 @@ def get_formatted_xsum_data():
     try:
         dataset = load_dataset("EdinburghNLP/xsum", split="train", download_mode="force_redownload")
         formatted_data = [
-            {'text': f"Question: You are an AI assistant. You need to make a concise summary from the following text: {item['document'].strip()} \nAnswer: {item['summary'].strip()}"}
+            {'text': f"Question: {item['document'].strip()} \nAnswer: {item['summary'].strip()}"}
             for item in dataset
         ]
         # Convert the list to a DataFrame

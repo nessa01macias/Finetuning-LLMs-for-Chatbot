@@ -14,9 +14,9 @@
 
 #SBATCH --cpus-per-task=10
 
-#SBATCH --mem=150G
+#SBATCH --mem=80G
 
-#SBATCH --time=08:00:00
+#SBATCH --time=12:00:00
 
 #SBATCH --gres=gpu:v100:1
 

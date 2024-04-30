@@ -17,42 +17,44 @@ from trl import SFTTrainer
 # Environment configuration
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
+
+def formatting_prompts_func(example):
+    output_texts = []
+    for text in example['text']:
+        # Split the text into the question and answer parts
+        parts = text.split('\nAnswer: ')
+        question = parts[0]  # This is everything before "Answer:"
+        answer = parts[1] if len(parts) > 1 else ''  # Everything after "Answer:", if it exists
+        
+        # Now format it as required
+        formatted_text = f"Input: {question}\n### Output: {answer}"
+        output_texts.append(formatted_text)
+    
+    return {'text': output_texts}
+
+
 # Define device for training
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
 # Set working directory and list files
 cwd = os.getcwd()
-train_data_path = os.path.join(cwd, 'train_data')
-files = os.listdir(train_data_path)
-print(f"Files in '{train_data_path}': {files}")
+train_data_path = os.path.join(cwd, 'data', 'train_data.json')
+val_data_path = os.path.join(cwd, 'data', 'validation_data.json')
 
-# Load and format the dataset
-data_cleaned = []
-errors = []
-split_files = [f for f in files if f.startswith('train_data_split_') and f.endswith('.json')]
+# Load and format training data
+with open(train_data_path, 'r', encoding='utf8') as file:
+    train_data = [json.loads(line) for line in file if line.strip()]
+train_df = pd.DataFrame(train_data)
+train_dataset = Dataset.from_pandas(train_df)
+print(f"Training data loaded: {len(train_df)} entries")
 
-for file_name in split_files:
-    file_path = os.path.join(train_data_path, file_name)
-    try:
-        with open(file_path, 'r', encoding='utf8') as file:
-            data = json.load(file)
-            for item in data:
-                if 'text' in item:
-                    data_cleaned.append({'text': item['text']})
-                else:
-                    errors.append(f"Missing 'text' key in item from file {file_name}")
-    except json.JSONDecodeError as e:
-        errors.append((file_name, str(e)))
-
-df = pd.DataFrame(data_cleaned)
-if errors:
-    print(f"Errors encountered: {len(errors)}")
-    for error in errors[:10]:
-        print(error)
-
-print(df.head())
-data = Dataset.from_pandas(df)
+# Load and format validation data
+with open(val_data_path, 'r', encoding='utf8') as file:
+    val_data = [json.loads(line) for line in file if line.strip()]
+val_df = pd.DataFrame(val_data)
+val_dataset = Dataset.from_pandas(val_df)
+print(f"Validation data loaded: {len(val_df)} entries")
 
 # Load model and tokenizer
 base_model = "google/gemma-2b"
@@ -89,13 +91,13 @@ model.config.pretraining_tp = 1
 # Training arguments
 training_arguments = TrainingArguments(
     output_dir="./results_gemma",
-    num_train_epochs=1,
+    num_train_epochs=2,
     per_device_train_batch_size = 8,
     per_device_eval_batch_size = 8,
     gradient_accumulation_steps = 4,
     optim="paged_adamw_32bit",
-    save_steps=25,
-    logging_steps=25,
+    save_steps=50,
+    logging_steps=50,
     learning_rate=2e-4,
     weight_decay=0.001,
     fp16=True,
@@ -117,15 +119,17 @@ peft_config = LoraConfig(
     target_modules=["q_proj", "k_proj", "v_proj", "o_proj","gate_proj", "up_proj"]
 )
 
-# Initialize the trainer
+
 trainer = SFTTrainer(
     model=model,
-    train_dataset=data,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
     peft_config=peft_config,
     dataset_text_field="text",
-    max_seq_length=40,
+    max_seq_length= 40,
     tokenizer=tokenizer,
     args=training_arguments,
+    formatting_func=formatting_prompts_func  
 )
 
 print("Trainer configured with LoraConfig")

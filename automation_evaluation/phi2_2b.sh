@@ -1,6 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=training_gemma
+
+
+#SBATCH --job-name=phi2_2b-bleu-evaluation
 
 #SBATCH --account=project_2008167
 
@@ -12,11 +14,11 @@
 
 #SBATCH --cpus-per-task=10
 
-#SBATCH --mem=80G
+#SBATCH --mem=50G
 
-#SBATCH --time=12:00:00
+#SBATCH --time=06:00:00
 
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:v100:2
 
 #SBATCH --mail-type=END,FAIL
 
@@ -46,13 +48,13 @@ source /scratch/project_2008167/venv/bin/activate
 
 # Navigate to the directory containing your script
 
-cd /scratch/project_2008167/thesis
+cd /scratch/project_2008167/thesis/evaluation
 
 
 
 # Execute the Python script
 
-python training_gemma.py
+python phi2_2b.py
 
 
 
