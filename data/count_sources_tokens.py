@@ -120,7 +120,7 @@ def main():
     total_tokens = []
     for filename in files_names:
         print(f"3. Reading file: {filename}")
-
+        tokens_number = 0
 
 
         file_path = os.path.join(pdf_dir, filename)
