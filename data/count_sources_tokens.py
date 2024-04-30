@@ -2,13 +2,9 @@ import json
 import os
 from PyPDF2 import PdfReader
 from cleantext import clean
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
 import spacy
-import re
-import torch
-
-torch.cuda.empty_cache()
-torch.cuda.memory_summary(device=None, abbreviated=False)
+import nltk
+from nltk.tokenize import word_tokenize
 
 
 def extract_text_from_pdf(file_path):
@@ -91,6 +87,10 @@ def clean_text(text, nlp) -> str:
     final_cleaned_text += cleaned_text[start_idx:]  # Add any remaining text after the last entity
     return final_cleaned_text
 
+def count_tokens(text):
+    """Tokenizes the given text and returns the count of tokens"""
+    tokens = word_tokenize(text)
+    return len(tokens)
 
 
 def save_to_json(output_path, data):
@@ -99,9 +99,9 @@ def save_to_json(output_path, data):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 
-
-
 def main():
+    # Ensure that the necessary NLTK resources are downloaded
+    nltk.download('punkt')
 
     # Load English tokenizer, tagger, parser, and NER
     nlp = spacy.load("en_core_web_sm")
@@ -116,19 +116,23 @@ def main():
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
 
-    # Dictionary to hold all Q&A pairs for each file
-    total_tokens = []
+    token_counts = {}  # Dictionary to hold token counts for each file
     for filename in files_names:
         print(f"3. Reading file: {filename}")
-        tokens_number = 0
-
-
         file_path = os.path.join(pdf_dir, filename)
-        total_tokens.append({file_path: tokens_number})
+        
+        extracted_text = extract_text_from_pdf(file_path)
+        if extracted_text:
+            cleaned_text = clean_text(extracted_text, nlp)
+            print(f"4. Cleaned text for {filename}")
+            tokens_number = count_tokens(cleaned_text)
+            token_counts[filename] = tokens_number
+            print(f"5. Token count for {filename}: {tokens_number}")
+        else:
+            print(f"Warning: No text extracted from {filename}")
 
-
-    save_to_json(os.path.join(results_dir, 'tokens_count.json'), total_tokens)
-    print(f"8. All Q&A pairs saved to {results_dir}")
+    save_to_json(os.path.join(results_dir, 'tokens_count.json'), token_counts)
+    print(f"6. All token counts saved to {results_dir}")
 
 if __name__ == "__main__":
     main()
