@@ -1,11 +1,11 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model = AutoModelForCausalLM.from_pretrained("nessa01macias/phi-2_sustainability-qa", trust_remote_code=False)
+model = AutoModelForCausalLM.from_pretrained("microsoft/phi-2", trust_remote_code=False)
 
 tokenizer = AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=False)
 
-propmt = "Group the words into two categories, 'positive' or 'negative' based on the sentiment: efficient, helpful, slow, horrible, fantastic, disappointing, confusing, lovely, excellent. "
+propmt = "What global goals were established to address the most pressing challenges of our time, and how do they build upon previous initiatives?"
 
 inputs = tokenizer(propmt, return_tensors="pt", return_attention_mask=False)
 

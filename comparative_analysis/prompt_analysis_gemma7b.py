@@ -12,7 +12,7 @@ def load_questions(filepath):
 
 def prompt_model(model, tokenizer, prompt: str):
     start_time = time.time()
-    inputs = tokenizer(prompt, return_tensors="pt", return_attention_mask=False, truncation=True, max_length=700)
+    inputs = tokenizer(prompt, return_tensors="pt", return_attention_mask=False, padding=True, truncation=True, max_length=700)
     outputs = model.generate(**inputs, max_new_tokens=50)
     end_time = time.time()
     inference_time = end_time - start_time
@@ -41,7 +41,7 @@ def main():
         "gemma_7b_finetuned": (AutoModelForCausalLM.from_pretrained("nessa01macias/gemma-7b_sustainability-qa", low_cpu_mem_usage=True, trust_remote_code=False, torch_dtype=torch.float16, device_map = 'auto'),
                                AutoTokenizer.from_pretrained("google/gemma-7b", trust_remote_code=False)),
         "gemma_7b": (AutoModelForCausalLM.from_pretrained("google/gemma-7b", trust_remote_code=False, low_cpu_mem_usage=True, device_map='auto'),
-                        AutoTokenizer.from_pretrained("google/gemma-7b", trust_remote_code=False))
+                        AutoTokenizer.from_pretrained("google/gemma-7b", trust_remote_code=False)),
         # "llama3_8b_finetuned": (AutoModelForCausalLM.from_pretrained("nessa01macias/llama-3-8b_sustainability-qa", low_cpu_mem_usage=True, trust_remote_code=False, torch_dtype=torch.float16, device_map = 'auto'),
         #                        AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B", trust_remote_code=False)),
         # "llama3_8b": (AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B", low_cpu_mem_usage=True, trust_remote_code=False, torch_dtype=torch.float16, device_map = 'auto'),
@@ -61,7 +61,7 @@ def main():
                 "inference_time": inference_time
             })
 
-    with open('model_responses_phi.json', 'w', encoding='utf-8') as f:
+    with open('model_responses_gemma.json', 'w', encoding='utf-8') as f:
         json.dump(responses, f, ensure_ascii=False, indent=4)
 
 
