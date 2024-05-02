@@ -22,8 +22,8 @@ def formatting_prompts_func(example):
         question = parts[0]  # This is everything before "Answer:"
         answer = parts[1] if len(parts) > 1 else ''  # Everything after "Answer:", if it exists
         
-        # Now format it as required
-        formatted_text = f"Input: {question}\n### Output: {answer}"
+        # Now format it as required by the official documentation
+        formatted_text = f"Instruct: {question}\nOutput: {answer}"
         output_texts.append(formatted_text)
     
     return {'text': output_texts}

@@ -76,7 +76,7 @@ def main():
 
     try:
         # Load model and tokenizer from Hugging Face
-        model = AutoModelForCausalLM.from_pretrained("nessa01macias/llama-2-13b_sustainability-qa", trust_remote_code=False, torch_dtype=torch.float16, device_map = device)
+        model = AutoModelForCausalLM.from_pretrained("nessa01macias/llama-2-13b_sustainability-qa", trust_remote_code=False, low_cpu_mem_usage=True, torch_dtype=torch.float16, device_map = device)
         tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-13b-hf", trust_remote_code=False)
         model.to(device)
 

@@ -1,7 +1,7 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model = AutoModelForCausalLM.from_pretrained("nessa01macias/phi-2_sustainability-qa", trust_remote_code=False, torch_dtype=torch.float32)
+model = AutoModelForCausalLM.from_pretrained("nessa01macias/phi-2_sustainability-qa", trust_remote_code=False, torch_dtype=torch.float16)
 
 tokenizer = AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=False)
 

@@ -3,16 +3,24 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_metric
 import os
+import time
 
 def load_test_data(filepath):
+    start_time = time.perf_counter()  # Start timing
+
     with open(filepath, 'r', encoding='utf-8') as file:
         data = [json.loads(line) for line in file if line.strip()]
     questions = [item['text'].split("\nAnswer:")[0].strip() for item in data]
     references = [[item['text'].split("\nAnswer:")[1].strip()] for item in data]
+
+    end_time = time.perf_counter()  # End timing
+    print(f"Loading test data took {end_time - start_time:.4f} seconds")
     return questions, references
 
 
 def generate_and_save_predictions(model, tokenizer, questions, references, results_path, batch_size=8):
+    start_time = time.perf_counter()  # Start timing
+
     device = model.device  # Get the device model is on
     with open(results_path, 'w', encoding='utf-8') as f:
         for i in range(0, len(questions), batch_size):
@@ -23,8 +31,11 @@ def generate_and_save_predictions(model, tokenizer, questions, references, resul
             inputs = tokenizer(batch_questions, return_tensors="pt", padding=True, truncation=True, max_length=661)
             inputs = {key: tensor.to(device) for key, tensor in inputs.items()}  # Move input tensors to the device
 
+            start_time_inference = time.perf_counter()  # Start timing for inference
             # Generate responses using the model
             outputs = model.generate(**inputs, max_new_tokens=50)  # Adjust max_new_tokens for your needs
+            end_time_inference = time.perf_counter()  # End timing for inference
+            print(f"Inference for batch {i//batch_size+1}: took {start_time_inference - end_time_inference:.4f} seconds")
 
             # Decode generated token ids to text
             batch_predictions = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
@@ -49,8 +60,14 @@ def generate_and_save_predictions(model, tokenizer, questions, references, resul
                 }
                 f.write(json.dumps(result_data, ensure_ascii=False) + "\n")
 
+    end_time = time.perf_counter()  # End timing
+    print(f"Generating and saving predictions took {end_time - start_time:.4f} seconds")
+
 
 def calculate_bleu(filepath):
+
+    start_time = time.perf_counter()  # Start timing
+
     with open(filepath, 'r', encoding='utf-8') as f:
         predictions = []
         references = []
@@ -60,10 +77,16 @@ def calculate_bleu(filepath):
             references.append([entry['reference_answer'].split()])
     bleu_metric = load_metric("bleu")
     results = bleu_metric.compute(predictions=predictions, references=references)
+
+    end_time = time.perf_counter()  # End timing
+    print(f"Generating bleu metrics took {end_time - start_time:.4f} seconds")
+
     return results['bleu']
 
 
 def main():
+
+    start_time = time.perf_counter()  # Start timing for the entire main function
 
     # Environment configuration
     os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
@@ -71,14 +94,14 @@ def main():
     torch.cuda.empty_cache()  # Clear any cached memory
     torch.backends.cudnn.deterministic = True  # Optional: for reproducibility
 
-    test_data_path = '/scratch/project_2008167/thesis/data/test_data_llama2-13b.json.json'
+    test_data_path = '/scratch/project_2008167/thesis/data/test_data_llama2-13b.json'
     results_path = '/scratch/project_2008167/thesis/evaluation/phi-2_automatic_evaluation.json'
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     try:
         # Load model and tokenizer from Hugging Face
-        model = AutoModelForCausalLM.from_pretrained("nessa01macias/phi-2_sustainability-qa", trust_remote_code=False, torch_dtype=torch.float16, device_map = 'auto')
+        model = AutoModelForCausalLM.from_pretrained("nessa01macias/phi-2_sustainability-qa", trust_remote_code=False, low_cpu_mem_usage=True,  torch_dtype=torch.float16, device_map = 'auto')
         tokenizer = AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=False)
         model.to(device)
 
@@ -100,6 +123,9 @@ def main():
 
     except Exception as e:
         print(f"An error occurred: {e}")
+
+    end_time = time.perf_counter()  # End timing for the entire main function
+    print(f"Total execution time: {end_time - start_time:.4f} seconds")
 
 
 if __name__ == "__main__":
