@@ -1,6 +1,7 @@
 import json
 import numpy as np
 from transformers import AutoTokenizer
+import os
 
 def analyze_and_preprocess_data(tokenizer_name, file_path, output_file_path):
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
@@ -37,10 +38,14 @@ def analyze_and_preprocess_data(tokenizer_name, file_path, output_file_path):
     
     print(f"Filtered data written to {output_file_path}. Used max_length: {max_length}")
 
+
+pdf_dir = os.getcwd()  # Adjust this if necessary to point to the correct directory
+results_dir = os.path.join(pdf_dir, 'results')
+file_path = os.path.join(results_dir, 'test_data_llama3.json')
+output_file_path = os.path.join(results_dir, 'test_data_llama3_no_outliers.json')
+
 # Parameters
-tokenizer_name = "meta-llama/Llama-2-13b-hf"  # or "llama2-13b-specific-tokenizer"
-file_path = '/scratch/project_2008167/thesis/data/test_data.json'
-output_file_path = '/scratch/project_2008167/thesis/data/test_data_llama2-13b.json'  # Adjust based on the tokenizer used
+tokenizer_name = "meta-llama/Meta-Llama-3-8B"  # or "llama2-13b-specific-tokenizer"
 
 # Running the function
 analyze_and_preprocess_data(tokenizer_name, file_path, output_file_path)

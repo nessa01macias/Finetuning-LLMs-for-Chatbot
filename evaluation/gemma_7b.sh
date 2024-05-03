@@ -2,7 +2,7 @@
 
 
 
-#SBATCH --job-name=gemma7b-bleu-evaluation
+#SBATCH --job-name=base-gemma7b-bleu-evaluation
 
 #SBATCH --account=project_2008167
 
@@ -16,9 +16,9 @@
 
 #SBATCH --mem=50G
 
-#SBATCH --time=15:00:00
+#SBATCH --time=40:00:00
 
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:v100:2
 
 #SBATCH --mail-type=END,FAIL
 
@@ -47,7 +47,7 @@ source /scratch/project_2008167/venv/bin/activate
 
 # Navigate to the directory containing your script
 
-cd /scratch/project_2008167/thesis/evaluation
+cd /scratch/project_2008167/thesis/evaluation/base_models
 
 
 

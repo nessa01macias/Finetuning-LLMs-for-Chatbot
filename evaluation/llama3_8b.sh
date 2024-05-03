@@ -2,7 +2,7 @@
 
 
 
-#SBATCH --job-name=llama2-13b-bleu-evaluation
+#SBATCH --job-name=llama3-8b-bleu-evaluation
 
 #SBATCH --account=project_2008167
 
@@ -16,9 +16,9 @@
 
 #SBATCH --mem=50G
 
-#SBATCH --time=20:00:00
+#SBATCH --time=40:00:00
 
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:v100:2
 
 #SBATCH --mail-type=END,FAIL
 
@@ -53,7 +53,7 @@ cd /scratch/project_2008167/thesis/evaluation
 
 # Execute the Python script
 
-python llama2_13b.py
+python llama3_8b.py
 
 
 echo "------------------------------------------------"

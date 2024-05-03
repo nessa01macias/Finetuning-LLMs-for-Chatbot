@@ -24,7 +24,7 @@ def generate_and_save_predictions(model, tokenizer, questions, references, resul
             inputs = {key: tensor.to(device) for key, tensor in inputs.items()}  # Move input tensors to the device
 
             # Generate responses using the model
-            outputs = model.generate(**inputs, max_new_tokens=50)  # Adjust max_new_tokens for your needs
+            outputs = model.generate(**inputs, max_new_tokens=100)  # Adjust max_new_tokens for your needs
 
             # Decode generated token ids to text
             batch_predictions = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
@@ -49,17 +49,17 @@ def generate_and_save_predictions(model, tokenizer, questions, references, resul
                 }
                 f.write(json.dumps(result_data, ensure_ascii=False) + "\n")
 
-def calculate_bleu(filepath):
-    with open(filepath, 'r', encoding='utf-8') as f:
-        predictions = []
-        references = []
-        for line in f:
-            entry = json.loads(line)
-            predictions.append(entry['generated_answer'].split())
-            references.append([entry['reference_answer'].split()])
-    bleu_metric = load_metric("bleu")
-    results = bleu_metric.compute(predictions=predictions, references=references)
-    return results['bleu']
+# def calculate_bleu(filepath):
+#     with open(filepath, 'r', encoding='utf-8') as f:
+#         predictions = []
+#         references = []
+#         for line in f:
+#             entry = json.loads(line)
+#             predictions.append(entry['generated_answer'].split())
+#             references.append([entry['reference_answer'].split()])
+#     bleu_metric = load_metric("bleu")
+#     results = bleu_metric.compute(predictions=predictions, references=references)
+#     return results['bleu']
 
 def main():
 
@@ -70,17 +70,17 @@ def main():
     torch.backends.cudnn.deterministic = True  # Optional: for reproducibility
 
     test_data_path = '/scratch/project_2008167/thesis/data/test_data_llama2-13b.json'
-    results_path = '/scratch/project_2008167/thesis/evaluation/llama2-13b_automatic_evaluation.json'
+    results_path = '/scratch/project_2008167/thesis/evaluation/base_llama3_8b_automatic_evaluation.json'
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     try:
         # Load model and tokenizer from Hugging Face
-        model = AutoModelForCausalLM.from_pretrained("nessa01macias/llama-2-13b_sustainability-qa", trust_remote_code=False, low_cpu_mem_usage=True, torch_dtype=torch.float16, device_map = device)
-        tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-13b-hf", trust_remote_code=False)
+        model = AutoModelForCausalLM.from_pretrained("nessa01macias/llama-3-8b_sustainability-qa", trust_remote_code=False, low_cpu_mem_usage=True, torch_dtype=torch.float16, device_map = device)
+        tokenizer = AutoTokenizer.from_pretrained("nessa01macias/llama-3-8b_sustainability-qa", trust_remote_code=False)
         model.to(device)
 
-        print("------------This script is used on model llama-2-13b---------------")
+        print("------------This script is used on model llama-3-8b---------------")
 
         print("Model and tokenizer loaded")
 
@@ -94,11 +94,11 @@ def main():
         print("Data loaded")
 
         # Generate predictions and save them
-        generate_and_save_predictions(model, tokenizer, questions, references, results_path, batch_size=1)
+        generate_and_save_predictions(model, tokenizer, questions, references, results_path, batch_size=4)
 
         # Calculate BLEU score after all data has been processed and saved
-        bleu_score = calculate_bleu(results_path)
-        print("BLEU Score:", bleu_score)
+        # bleu_score = calculate_bleu(results_path)
+        # print("BLEU Score:", bleu_score)
 
     except Exception as e:
         print(f"An error occurred: {e}")

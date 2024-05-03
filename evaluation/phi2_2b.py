@@ -64,25 +64,6 @@ def generate_and_save_predictions(model, tokenizer, questions, references, resul
     print(f"Generating and saving predictions took {end_time - start_time:.4f} seconds")
 
 
-def calculate_bleu(filepath):
-
-    start_time = time.perf_counter()  # Start timing
-
-    with open(filepath, 'r', encoding='utf-8') as f:
-        predictions = []
-        references = []
-        for line in f:
-            entry = json.loads(line)
-            predictions.append(entry['generated_answer'].split())
-            references.append([entry['reference_answer'].split()])
-    bleu_metric = load_metric("bleu")
-    results = bleu_metric.compute(predictions=predictions, references=references)
-
-    end_time = time.perf_counter()  # End timing
-    print(f"Generating bleu metrics took {end_time - start_time:.4f} seconds")
-
-    return results['bleu']
-
 
 def main():
 
@@ -101,7 +82,7 @@ def main():
 
     try:
         # Load model and tokenizer from Hugging Face
-        model = AutoModelForCausalLM.from_pretrained("nessa01macias/phi-2_sustainability-qa", trust_remote_code=False, low_cpu_mem_usage=True,  torch_dtype=torch.float16, device_map = 'auto')
+        model = AutoModelForCausalLM.from_pretrained("microsoft/phi-2", trust_remote_code=False, low_cpu_mem_usage=True,  torch_dtype=torch.float16, device_map = 'auto')
         tokenizer = AutoTokenizer.from_pretrained("microsoft/phi-2", trust_remote_code=False)
         model.to(device)
 
@@ -115,11 +96,7 @@ def main():
         questions, references = load_test_data(test_data_path)
 
         # Generate predictions and save them
-        generate_and_save_predictions(model, tokenizer, questions, references, results_path, batch_size=6)
-
-        # Calculate BLEU score after all data has been processed and saved
-        bleu_score = calculate_bleu(results_path)
-        print("BLEU Score ", bleu_score)
+        generate_and_save_predictions(model, tokenizer, questions, references, results_path, batch_size=10)
 
     except Exception as e:
         print(f"An error occurred: {e}")
