@@ -49,18 +49,6 @@ def generate_and_save_predictions(model, tokenizer, questions, references, resul
                 }
                 f.write(json.dumps(result_data, ensure_ascii=False) + "\n")
 
-# def calculate_bleu(filepath):
-#     with open(filepath, 'r', encoding='utf-8') as f:
-#         predictions = []
-#         references = []
-#         for line in f:
-#             entry = json.loads(line)
-#             predictions.append(entry['generated_answer'].split())
-#             references.append([entry['reference_answer'].split()])
-#     bleu_metric = load_metric("bleu")
-#     results = bleu_metric.compute(predictions=predictions, references=references)
-#     return results['bleu']
-
 def main():
 
     # Environment configuration
@@ -76,8 +64,8 @@ def main():
 
     try:
         # Load model and tokenizer from Hugging Face
-        model = AutoModelForCausalLM.from_pretrained("nessa01macias/llama-3-8b_sustainability-qa", trust_remote_code=False, low_cpu_mem_usage=True, torch_dtype=torch.float16, device_map = device)
-        tokenizer = AutoTokenizer.from_pretrained("nessa01macias/llama-3-8b_sustainability-qa", trust_remote_code=False)
+        model = AutoModelForCausalLM.from_pretrained("nessa01macias/llama3-8b_sustainability-qa-ins", trust_remote_code=False, low_cpu_mem_usage=True, torch_dtype=torch.float16, device_map = device)
+        tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B", trust_remote_code=False)
         model.to(device)
 
         print("------------This script is used on model llama-3-8b---------------")

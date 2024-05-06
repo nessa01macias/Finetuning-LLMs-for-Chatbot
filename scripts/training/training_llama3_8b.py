@@ -12,27 +12,53 @@ from transformers import (
 )
 from peft import LoraConfig, prepare_model_for_kbit_training, PeftModel
 from trl import SFTTrainer
+from transformers import AutoTokenizer
+
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
-def formatting_prompts_func(example):
-    output_texts = []
-    for text in example['text']:
-        # Split the text into the question and answer parts
-        parts = text.split('\nAnswer: ')
-        question = parts[0]  # This is everything before "Answer:"
-        answer = parts[1] if len(parts) > 1 else ''  # Everything after "Answer:", if it exists
-        
-        # Now format it as required
-        formatted_text = f"Input: {question}\n### Output: {answer}"
-        output_texts.append(formatted_text)
-    
-    return {'text': output_texts}
+compute_dtype = torch.float16
+
+model_name = "meta-llama/Meta-Llama-3-8B"
+new_model = "llama3-8b_sustainability-qa"
+
+
+#Tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_name, add_eos_token=True, use_fast=True)
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.pad_token_id =  tokenizer.eos_token_id
+tokenizer.padding_side = 'left'
+EOS_TOKEN = tokenizer.eos_token # do not forget this part!
+
+
+#####################################################
+# this is basically the system prompt
+alpaca_prompt = """Below is an instruction that describes a task or a question, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+### Instruction:
+{}
+
+### Input:
+{}
+
+### Response:
+{}"""
+
+def formatting_prompts_func(examples):
+    instructions = examples["instruction"]
+    inputs       = examples["input"]
+    outputs      = examples["output"]
+    texts = []
+    for instruction, input, output in zip(instructions, inputs, outputs):
+        text = alpaca_prompt.format(instruction, input, output) + EOS_TOKEN # without this token generation goes on forever!
+        texts.append(text)
+    return { "text" : texts, }
 
 
 # Set working directory and list files
 cwd = os.getcwd()
-train_data_path = os.path.join(cwd, 'data', 'train_data.json')
-val_data_path = os.path.join(cwd, 'data', 'validation_data.json')
+
+train_data_path = os.path.join(cwd, 'data', 'train_data_llama3.json')
+val_data_path = os.path.join(cwd, 'data', 'validation_data_llama3.json')
 
 # Load and format training data
 with open(train_data_path, 'r', encoding='utf8') as file:
@@ -48,19 +74,9 @@ val_df = pd.DataFrame(val_data)
 val_dataset = Dataset.from_pandas(val_df)
 print(f"Validation data loaded: {len(val_df)} entries")
 
-
-compute_dtype = torch.float16
-
-model_name = "meta-llama/Meta-Llama-3-8B"
-new_model = "llama-3-8b_sustainability-qa"
-
-
-#Tokenizer
-tokenizer = AutoTokenizer.from_pretrained(model_name, add_eos_token=True, use_fast=True)
-tokenizer.pad_token = tokenizer.eos_token
-tokenizer.pad_token_id =  tokenizer.eos_token_id
-tokenizer.padding_side = 'left'
-
+dataset_t = train_dataset.map(formatting_prompts_func, batched = True,)
+dataset_v = val_dataset.map(formatting_prompts_func, batched = True,)
+####################################################
 
 bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -93,7 +109,7 @@ peft_config = LoraConfig(
 
 training_arguments = TrainingArguments(
         output_dir="./results_Llama3_8b",
-        num_train_epochs=1,
+        num_train_epochs=2,
         per_device_train_batch_size = 8,
         per_device_eval_batch_size = 8,
         gradient_accumulation_steps = 4,
@@ -113,8 +129,8 @@ training_arguments = TrainingArguments(
 
 trainer = SFTTrainer(
         model=model,
-        train_dataset=train_dataset,
-        eval_dataset=val_dataset,
+        train_dataset=dataset_t,
+        eval_dataset=dataset_v,
         peft_config=peft_config,
         dataset_text_field="text",
         max_seq_length=40,

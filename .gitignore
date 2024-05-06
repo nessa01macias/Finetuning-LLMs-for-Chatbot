@@ -7,3 +7,4 @@ data/final/*
 data/train_data/*
 data/sustainability_pdfs/results/*
 evaluation/results/*
+data/llama3-8B/*
